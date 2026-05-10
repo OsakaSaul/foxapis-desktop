@@ -22,6 +22,15 @@ Web-based MCP works, but every client needs its own auth dance. With FoxAPIs Des
 - React 18 + TypeScript + Tailwind 3
 - macOS (Apple Silicon + Intel), Windows, Linux
 
+## Install
+
+```pwsh
+pwsh scripts/saul-bootstrap.ps1   # Windows
+./scripts/saul-bootstrap.sh        # macOS / Linux
+```
+
+Or follow [docs/DEPLOY.md](docs/DEPLOY.md) for manual steps.
+
 ## Quick start (developer)
 
 ```bash

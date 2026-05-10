@@ -1,5 +1,14 @@
 # Deploy & distribution — FoxAPIs Desktop
 
+## Quick start
+
+Windows: `pwsh scripts/saul-bootstrap.ps1`
+macOS/Linux: `./scripts/saul-bootstrap.sh`
+
+Either script handles: Rust install, npm install, cargo check, Tauri updater key gen, homebrew tap creation, idempotent on re-run.
+
+The manual steps below are kept for reference / debugging.
+
 ## What ships in v0.1
 
 A Tauri 2 desktop app for macOS (Apple Silicon + Intel via universal binary), Windows (x64), and Linux (x64 .deb / .rpm / .AppImage). Built and uploaded via GitHub Actions on tag push.
