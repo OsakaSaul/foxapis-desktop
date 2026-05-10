@@ -1,0 +1,86 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "FoxAPIs Desktop",
+  "version": "0.1.0",
+  "identifier": "com.foxapis.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:1420",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "FoxAPIs Desktop",
+        "width": 1100,
+        "height": 720,
+        "minWidth": 800,
+        "minHeight": 600,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "trayIcon": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true,
+      "menuOnLeftClick": true,
+      "tooltip": "FoxAPIs Desktop"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "DeveloperTool",
+    "shortDescription": "Local agentic workspace — MCP relay + tool catalog",
+    "longDescription": "FoxAPIs Desktop runs a local Model Context Protocol relay on localhost:8732 that proxies to MentionFox in the cloud. Connect Claude Desktop, Cursor, Continue, Goose, n8n, LibreChat, and other MCP clients with one bearer token. Browse all 18 tools, watch live activity, and run quick actions inline.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "10.15",
+      "entitlements": null,
+      "exceptionDomain": "",
+      "signingIdentity": null,
+      "providerShortName": null
+    },
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "http://timestamp.digicert.com",
+      "wix": {
+        "language": "en-US"
+      },
+      "nsis": {
+        "installMode": "perUser",
+        "installerIcon": "icons/icon.ico"
+      }
+    },
+    "linux": {
+      "deb": { "depends": [] }
+    },
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://github.com/OsakaSaul/foxapis-desktop/releases/latest/download/latest.json"
+      ],
+      "dialog": true,
+      "pubkey": "TODO_GENERATE_VIA_npx_tauri_signer_generate"
+    },
+    "autostart": {
+      "macosLogin": true,
+      "args": ["--minimized"]
+    }
+  }
+}

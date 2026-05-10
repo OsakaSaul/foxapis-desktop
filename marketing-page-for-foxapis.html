@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FoxAPIs Desktop — your local agentic workspace</title>
+    <meta
+      name="description"
+      content="A 5MB desktop app that runs a local Model Context Protocol relay. Connect once, use everywhere — Claude Desktop, Cursor, Continue, Goose, n8n, LibreChat, Open WebUI, ChatGPT."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #111733;
+        --ink: #0b1020;
+        --slate2: #1a2040;
+        --cyan: #22d3ee;
+        --gold: #f5c542;
+        --lime: #45f882;
+        --muted: #6b7aa0;
+        --white: #ffffff;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: "Inter Tight", system-ui, sans-serif;
+        background: var(--navy);
+        color: var(--white);
+        line-height: 1.6;
+      }
+      code, pre, .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+      a { color: var(--cyan); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+      header.nav {
+        position: sticky; top: 0; z-index: 50;
+        background: rgba(11, 16, 32, 0.85); backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--slate2);
+        padding: 14px 0;
+      }
+      .nav-row { display: flex; align-items: center; gap: 24px; }
+      .brand { font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
+      .brand .accent { color: var(--cyan); }
+      .nav-links { margin-left: auto; display: flex; gap: 18px; font-size: 14px; }
+
+      .hero { padding: 80px 0 60px; }
+      .hero h1 {
+        font-size: clamp(36px, 6vw, 64px);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+      }
+      .hero h1 .accent { color: var(--cyan); }
+      .hero p.lede {
+        margin-top: 20px;
+        font-size: 19px;
+        color: #c9d1ed;
+        max-width: 720px;
+      }
+      .cta-row {
+        margin-top: 32px;
+        display: flex; gap: 12px; flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600; font-size: 14px;
+        border: 1px solid var(--slate2);
+        background: var(--ink); color: var(--white);
+        transition: transform .12s ease, border-color .12s ease;
+      }
+      .btn:hover { border-color: var(--cyan); transform: translateY(-1px); text-decoration: none; }
+      .btn.primary { background: var(--cyan); color: var(--navy); border-color: var(--cyan); }
+      .btn .platform { font-size: 11px; color: var(--muted); }
+
+      .section { padding: 64px 0; border-top: 1px solid var(--slate2); }
+      .section h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
+      .section p.sub { color: var(--muted); margin-top: 8px; max-width: 720px; }
+
+      .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 36px; }
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+      @media (max-width: 800px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+
+      .card {
+        background: var(--ink); border: 1px solid var(--slate2);
+        border-radius: 12px; padding: 22px;
+      }
+      .card h3 { font-size: 17px; font-weight: 600; }
+      .card p { color: var(--muted); font-size: 14px; margin-top: 8px; }
+      .card .pill {
+        font-size: 10px; letter-spacing: .04em; text-transform: uppercase;
+        color: var(--lime); border: 1px solid rgba(69, 248, 130, 0.4);
+        padding: 2px 8px; border-radius: 999px; display: inline-block; margin-top: 12px;
+      }
+      .card .pill.gold { color: var(--gold); border-color: rgba(245, 197, 66, 0.4); }
+
+      pre.snippet {
+        background: var(--ink); border: 1px solid var(--slate2);
+        border-radius: 10px; padding: 18px;
+        font-size: 13px; overflow-x: auto;
+        margin-top: 16px;
+      }
+      pre.snippet .accent { color: var(--cyan); }
+      pre.snippet .gold { color: var(--gold); }
+
+      .clients-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+      .client-chip {
+        font-size: 13px; padding: 8px 12px; border-radius: 8px;
+        background: var(--ink); border: 1px solid var(--slate2);
+      }
+
+      footer.foot {
+        padding: 40px 0; border-top: 1px solid var(--slate2);
+        text-align: center; color: var(--muted); font-size: 13px;
+      }
+      .small { font-size: 12px; color: var(--muted); }
+      .accent-line {
+        height: 2px; width: 80px; background: linear-gradient(90deg, var(--cyan), var(--lime));
+        margin: 12px 0 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="container nav-row">
+        <div class="brand"><span class="accent">Fox</span>APIs <span class="small">Desktop</span></div>
+        <nav class="nav-links">
+          <a href="#why">Why</a>
+          <a href="#install">Install</a>
+          <a href="#clients">Clients</a>
+          <a href="#tools">Tools</a>
+          <a href="#privacy">Privacy</a>
+          <a href="https://www.mentionfox.com">MentionFox</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <h1>
+          FoxAPIs Desktop —<br />
+          your <span class="accent">local agentic workspace</span>.
+        </h1>
+        <p class="lede">
+          A 5MB desktop app that runs a local Model Context Protocol relay on
+          <span class="mono">localhost:8732</span>. Connect once here — every local LLM client (Claude Desktop,
+          Cursor, Continue, Goose, n8n, LibreChat, Open WebUI, ChatGPT) talks to one URL and gets the same
+          18 MentionFox tools.
+        </p>
+        <div class="accent-line"></div>
+        <div class="cta-row">
+          <a class="btn primary" href="https://github.com/OsakaSaul/foxapis-desktop/releases/latest/download/FoxAPIs-Desktop_universal.dmg">
+            Download for macOS <span class="platform">universal</span>
+          </a>
+          <a class="btn" href="https://github.com/OsakaSaul/foxapis-desktop/releases/latest/download/FoxAPIs-Desktop_x64-setup.exe">
+            Download for Windows <span class="platform">x64</span>
+          </a>
+          <a class="btn" href="https://github.com/OsakaSaul/foxapis-desktop/releases/latest/download/FoxAPIs-Desktop_amd64.AppImage">
+            Download for Linux <span class="platform">AppImage</span>
+          </a>
+        </div>
+        <p class="small" style="margin-top: 14px;">
+          Or install via Homebrew: <span class="mono">brew tap OsakaSaul/foxapis &amp;&amp; brew install --cask foxapis-desktop</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="container">
+        <h2>Connect once, use everywhere</h2>
+        <p class="sub">
+          Web-based MCP works, but every client needs its own auth dance. Pasting bearer tokens into Claude
+          Desktop, then again into Cursor, then again into n8n. Rotating the token? Now do that three times.
+          Wonder which client just burned 30 credits on a bad call? Check three different log surfaces.
+          FoxAPIs Desktop fixes all of that.
+        </p>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>One token, eight clients</h3>
+            <p>
+              Save your MentionFox bearer once in the desktop app. Every connected client points at the same
+              <span class="mono">localhost:8732/mcp</span> URL. Rotate the token in one place, every client follows.
+            </p>
+            <span class="pill">Wired in v0.1</span>
+          </div>
+          <div class="card">
+            <h3>Live activity log</h3>
+            <p>
+              Every MCP call across every client streams into one timeline. Tool name, client, status, latency,
+              cache hit/miss, error. Filter by tool. Filter by client. Find the bad call.
+            </p>
+            <span class="pill">Wired in v0.1</span>
+          </div>
+          <div class="card">
+            <h3>Tool catalog &amp; sandbox</h3>
+            <p>
+              All 18 MentionFox MCP tools, browsable, with full descriptions, JSON schemas, and a "Try it"
+              panel. Run a tool, see the response, copy the args into your real client config.
+            </p>
+            <span class="pill">Wired in v0.1</span>
+          </div>
+          <div class="card">
+            <h3>Connector hub</h3>
+            <p>
+              One-click setup for Claude Desktop, Cursor, and Continue. Detects the config file, merges in the
+              FoxAPIs entry, asks before saving. Other clients render copy-paste snippets.
+            </p>
+            <span class="pill">Wired in v0.1</span>
+          </div>
+          <div class="card">
+            <h3>Offline read</h3>
+            <p>
+              Cached dossiers and vetting reports work without the cloud. Per-request hash cache in your app
+              cache dir. Useful on planes, useful for repeat reads, useful for keeping live API costs down.
+            </p>
+            <span class="pill gold">Read-only in v0.1</span>
+          </div>
+          <div class="card">
+            <h3>System tray credits</h3>
+            <p>
+              Current balance + 24h / 7d burn rate, glanceable from the menubar. No need to flip to the
+              MentionFox dashboard mid-flow.
+            </p>
+            <span class="pill gold">Scaffold — see roadmap</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="install">
+      <div class="container">
+        <h2>One URL, then any client</h2>
+        <p class="sub">
+          The desktop app spawns a tiny HTTP server on <span class="mono">127.0.0.1:8732</span> as soon as it
+          launches. Point any MCP-aware client at it. The relay forwards every JSON-RPC 2.0 request to
+          MentionFox in the cloud with your token attached. Latency is whatever your network is, plus a
+          microsecond of localhost hop.
+        </p>
+        <pre class="snippet"><span class="gold"># Claude Desktop — claude_desktop_config.json</span>
+{
+  <span class="accent">"mcpServers"</span>: {
+    <span class="accent">"foxapis"</span>: {
+      <span class="accent">"url"</span>: <span class="accent">"http://127.0.0.1:8732/mcp"</span>
+    }
+  }
+}
+
+<span class="gold"># Cursor — ~/.cursor/mcp.json</span>
+{
+  <span class="accent">"mcpServers"</span>: {
+    <span class="accent">"foxapis"</span>: { <span class="accent">"url"</span>: <span class="accent">"http://127.0.0.1:8732/mcp"</span> }
+  }
+}
+
+<span class="gold"># Continue.dev — ~/.continue/config.json</span>
+{
+  <span class="accent">"experimental"</span>: {
+    <span class="accent">"modelContextProtocolServers"</span>: [
+      { <span class="accent">"name"</span>: <span class="accent">"foxapis"</span>,
+        <span class="accent">"transport"</span>: { <span class="accent">"type"</span>: <span class="accent">"http"</span>, <span class="accent">"url"</span>: <span class="accent">"http://127.0.0.1:8732/mcp"</span> } }
+    ]
+  }
+}</pre>
+        <p class="small" style="margin-top: 16px;">
+          Or just hit <strong>Install</strong> in the Connector Hub tab — the desktop app does the file edit
+          for you, with a confirmation dialog before saving.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="clients">
+      <div class="container">
+        <h2>Works with</h2>
+        <p class="sub">
+          Anything that speaks the Model Context Protocol works. The eight below have first-class support in
+          v0.1 — three with one-click writers, the rest with copy-paste snippets.
+        </p>
+        <div class="clients-row">
+          <span class="client-chip">Claude Desktop</span>
+          <span class="client-chip">Cursor</span>
+          <span class="client-chip">Continue.dev</span>
+          <span class="client-chip">Goose</span>
+          <span class="client-chip">n8n</span>
+          <span class="client-chip">LibreChat</span>
+          <span class="client-chip">Open WebUI</span>
+          <span class="client-chip">ChatGPT custom GPT</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tools">
+      <div class="container">
+        <h2>Eighteen tools, one connector</h2>
+        <p class="sub">
+          The MentionFox MCP server exposes a vetted set of research, scanning, and visibility tools. The
+          desktop app surfaces every one of them in the Tools tab with full descriptions, schemas, and a live
+          "Try it" sandbox.
+        </p>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Research</h3>
+            <p>
+              <span class="mono">clarify_research_intent</span> · <span class="mono">enrich_person</span> ·
+              <span class="mono">get_dossier</span> · <span class="mono">get_entrepreneur_report</span> ·
+              <span class="mono">get_investor_report</span> · <span class="mono">compare_people</span> ·
+              <span class="mono">get_my_recent_research</span>
+            </p>
+          </div>
+          <div class="card">
+            <h3>Scanning &amp; discovery</h3>
+            <p>
+              <span class="mono">scan_for_mentions</span> · <span class="mono">find_journalists_covering</span>
+            </p>
+          </div>
+          <div class="card">
+            <h3>Pipeline</h3>
+            <p>
+              <span class="mono">save_to_my_pipeline</span> · <span class="mono">subscribe_to_pipeline_watch</span> ·
+              <span class="mono">get_pipeline_watch_digest</span> · <span class="mono">deep_dive_pipeline_company</span> ·
+              <span class="mono">custom_pipeline_watch</span>
+            </p>
+          </div>
+          <div class="card">
+            <h3>GEO / AEO visibility</h3>
+            <p>
+              <span class="mono">get_geofixer_score</span> · <span class="mono">get_geofixer_top_actions</span> ·
+              <span class="mono">run_geofixer_audit</span>
+            </p>
+          </div>
+          <div class="card">
+            <h3>Reporting</h3>
+            <p>
+              <span class="mono">export_report</span> — generate a downloadable white-label report (HTML / PDF /
+              Markdown) from cached data, with optional agency branding override.
+            </p>
+          </div>
+          <div class="card">
+            <h3>... and growing</h3>
+            <p>
+              The MentionFox MCP server adds tools faster than the docs ship. The desktop app pulls
+              <span class="mono">tools/list</span> live, so anything new shows up in your catalog within minutes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="privacy">
+      <div class="container">
+        <h2>Where your data goes</h2>
+        <p class="sub">
+          Every JSON-RPC call you make is forwarded directly to <span class="mono">https://www.mentionfox.com/mcp</span>
+          with your bearer token attached, and the response is sent straight back to your local client. The
+          desktop app does not phone home, log to any third party, or touch any other network. The bearer
+          token is stored in your OS keyring (macOS Keychain, Windows Credential Vault, gnome-keyring on Linux).
+          Activity-log events live in memory and are cleared when you quit the app. Cached responses live in
+          your app cache directory and stay there until you delete them.
+        </p>
+        <p class="sub" style="margin-top: 16px;">
+          Open source. Audit it.
+          <a href="https://github.com/OsakaSaul/foxapis-desktop">github.com/OsakaSaul/foxapis-desktop</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Roadmap</h2>
+        <p class="sub">v0.1 ships the architecture. v0.2+ fills it in.</p>
+        <div class="grid-2">
+          <div class="card">
+            <h3>v0.2 (next)</h3>
+            <p>
+              Real credit balance in tray (per-response credit meta from MCP). Full one-click writers for
+              Goose / n8n / LibreChat / Open WebUI. Multi-account switcher. Offline write replay queue.
+              Native menubar widget on macOS.
+            </p>
+          </div>
+          <div class="card">
+            <h3>v0.3</h3>
+            <p>
+              Local model fallback for cache-only reads. Workflow recorder (replay common tool sequences).
+              Team/agency mode (one desktop, multiple authed users via OAuth pivot).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div class="container">
+        FoxAPIs Desktop · made for MentionFox subscribers · solo-built in Osaka, Japan ·
+        <a href="https://www.mentionfox.com">mentionfox.com</a> ·
+        <a href="https://github.com/OsakaSaul/foxapis-desktop">github</a>
+      </div>
+    </footer>
+  </body>
+</html>
